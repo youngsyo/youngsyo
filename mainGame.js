@@ -2,9 +2,12 @@ let stage = 8.1;
 let countDown = [];
 let scene = [];
 let tryGame = 0;
+let warn = false;
+let angle = 0;
+let tryAgain = false;
 
 //////////////////
-let time_x=900;
+let time_x = 900;
 let life = 4; //영험한 별
 let lifeStars = []; //영험한 별 이미지
 
@@ -45,7 +48,7 @@ let hammerImg; //망치 이미지
 let lv3_therm;
 let lv3_baking = [];
 let lv3_baked = 0;
-let lv3_timer = 1000; //lev2 연결 전 임시
+// let lv3_timer = 1000; //lev2 연결 전 임시
 let lv3_baking1 = 0;
 let THREEtoFOUR = 0; //4단계로 넘어갈 구운 빵의 수
 let lv3_color;
@@ -81,7 +84,12 @@ let spaceCount = -1;
 let opacity1 = 255;
 let opacity2 = 0;
 let change = false;
-////////////////
+/////////////////
+//shift를 위한 변수들
+// let sBelt; // lv4_belts shift용 변수
+// let cBelt; // lv4_belts length 유지용
+
+/////////////////////////////////////
 
 function preload() {
   scene[0] = loadImage("~photo/0_1 title.png");
@@ -159,9 +167,9 @@ function preload() {
 
 function setup() {
   createCanvas(900, 800);
-  for (let i = 0; i < 999; i++) {
-    countDown[i] = 30;
-  }
+  // for (let i = 0; i < 99; i++) {
+  //   countDown[i] = 30;
+  // }
   basket = new Basket();
   hammer = new Hammer();
 
@@ -181,6 +189,7 @@ function lv4_setting() {
   //벨트
   for (let i = 0; i < 3; i++) {
     lv4_belts[i] = new Belt(width - 150 * (i + 1), height - 150);
+    //let sBelt = lv4_belts.shift();
   }
   //별가루
   for (let i = 0; i < 3; i++) {
@@ -237,6 +246,18 @@ function draw() {
       lv3_failure = 0;
       lv4_failure = 0;
       breadCount = 0;
+      time_x = 900;
+
+      lv1_Stars = [];
+      lv2_Stars = [];
+      ONEtoTWO = [];
+      lv3_baking = [];
+      TWOtoTHREE = 0;
+
+      for (let i = 0; i < 99; i++) {
+        countDown[i] = 30;
+      }
+      //replay();
 
       // lv1_Stars.length = 0;
       // lv2_Stars.length = 0;
@@ -303,12 +324,12 @@ function draw() {
       }
       noStroke();
       fill(248, 252, 154);
-      rect(0,120, time_x, 10);
-      if(frameCount%60==0){
-        time_x -=60;
+      rect(0, 120, time_x, 10);
+      if (frameCount % 60 == 0) {
+        time_x -= 60;
       }
-      if(time_x==0){
-        time_x=900;
+      if (time_x == 0) {
+        time_x = 900;
       }
 
       //console.log(countDown);
@@ -318,6 +339,11 @@ function draw() {
       //let playMode = 'restart';
       bgm2.volume(0.4);
       bgm2.loop();
+      lv1_Stars = [];
+      lv2_Stars = [];
+      ONEtoTWO = [];
+      lv3_baking = [];
+      TWOtoTHREE = 0;
       case6_On(0, 70, 1, 0.85);
 
       break;
@@ -355,12 +381,12 @@ function draw() {
         }
       }
       fill(248, 252, 154);
-      rect(0,230, time_x, 10);
-      if(frameCount%60==0){
-        time_x -=60;
+      rect(0, 230, time_x, 10);
+      if (frameCount % 60 == 0) {
+        time_x -= 60;
       }
-      if(time_x==0){
-        time_x=900;
+      if (time_x == 0) {
+        time_x = 900;
       }
 
       break;
@@ -368,6 +394,11 @@ function draw() {
       //let playMode = 'restart';
       bgm2.volume(0.4);
       bgm2.loop();
+      lv1_Stars = [];
+      lv2_Stars = [];
+      ONEtoTWO = [];
+      lv3_baking = [];
+      TWOtoTHREE = 0;
       cursor();
       case7_On(0, 70, 1, 0.85);
 
@@ -407,18 +438,24 @@ function draw() {
       }
       noStroke();
       fill(248, 252, 154);
-      rect(0,120, time_x, 10);
-      if(frameCount%60==0){
-        time_x -=60;
+      rect(0, 120, time_x, 10);
+      if (frameCount % 60 == 0) {
+        time_x -= 60;
       }
-      if(time_x==0){
-        time_x=900;
+      if (time_x == 0) {
+        time_x = 900;
       }
+
       break;
     case 8:
       //let playMode = 'restart';
       bgm2.volume(0.4);
       bgm2.loop();
+      lv1_Stars = [];
+      lv2_Stars = [];
+      ONEtoTWO = [];
+      lv3_baking = [];
+      TWOtoTHREE = 0;
       cursor();
       case8_On(0, 70, 1, 0.85);
 
@@ -465,14 +502,14 @@ function draw() {
           lifeStars[i].display();
         }
       }
-      
-      image(breadStarImgs[0], width-250, 18);
+
+      image(breadStarImgs[0], width - 250, 18);
       textSize(50);
       textStyle(BOLD);
       fill(255);
-      text("+ "+ breadCount, width-130, 80);
+      text("+ " + breadCount, width - 130, 80);
       fill(0);
-      
+
       // noStroke();
       // fill(248, 252, 154);
       // rect(0,120, time_x, 10);
@@ -483,7 +520,7 @@ function draw() {
       //   time_x=900;
       // }
       fill(255);
-      
+
       //background(0);
 
       break;
@@ -493,6 +530,8 @@ function draw() {
       bgm4.loop();
       cursor();
       case9_On(0, 70, 1, 0.85);
+      //trygame = 0;
+      //countDown = [];
 
       break;
     case 10:
@@ -501,6 +540,8 @@ function draw() {
       bgm4.play();
       cursor();
       case10_On(0, 70, 1, 0.85);
+      //trygame = 0;
+      //countDown = [];
 
       break;
     case 11:
@@ -509,6 +550,8 @@ function draw() {
       bgm4.play();
       cursor();
       case11_On(0, 70, 1, 0.85);
+      // trygame = 0;
+      // countDown = [];
 
       break;
     case 12:
@@ -517,6 +560,8 @@ function draw() {
       bgm4.play();
       cursor();
       case12_On(0, 70, 1, 0.85);
+      // trygame = 0;
+      // countDown = [];
 
       break;
     case 13:
@@ -525,6 +570,8 @@ function draw() {
       bgm4.play();
       cursor();
       case13_On(0, 70, 1, 0.85);
+      // trygame = 0;
+      // countDown = [];
 
       break;
     case 14:
@@ -581,7 +628,7 @@ function case0_On(x, y, scX, scY) {
     image(button[2], width / 2, (height * 61) / 70, width / 5, height / 12);
   }
   imageMode(CORNER);
-  
+
   if (
     mouseX > (width * 85) / 100 &&
     mouseX < (width * 85) / 100 + width / 7 &&
@@ -805,7 +852,7 @@ function case5_1_On(x, y, scX, scY) {
   translate(x, y);
   lv1_GameOn(0, 0, 1, false);
   if (frameCount % 60 == 0 && countDown[tryGame * 4 + 0] > 0) {
-    countDown[tryGame * 4 + 0]-=2;;
+    countDown[tryGame * 4 + 0] -= 2;
   } else if (countDown[tryGame * 4 + 0] <= 0) {
     stage = 6;
   }
@@ -850,7 +897,7 @@ function case6_1_On(x, y, scX, scY) {
   rect(0, -100, width, 300);
   rect(0, 600, width, 900);
   if (frameCount % 60 == 0 && countDown[tryGame * 4 + 1] > 0) {
-    countDown[tryGame * 4 + 1]-=2;;
+    countDown[tryGame * 4 + 1] -= 2;
   } else if (countDown[tryGame * 4 + 1] <= 0) {
     stage = 7;
   }
@@ -905,7 +952,7 @@ function case7_1_On(x, y, scX, scY) {
   rect(0, -150, width, 150);
 
   if (frameCount % 60 == 0 && countDown[tryGame * 4 + 2] > 0) {
-    countDown[tryGame * 4 + 2]-=2;;
+    countDown[tryGame * 4 + 2] -= 2;
   } else if (countDown[tryGame * 4 + 2] <= 0) {
     stage = 8;
   }
@@ -956,11 +1003,11 @@ function case8_1_On(x, y, scX, scY) {
   //   stage = 0;
   //   tryGame += 1;
   // }
-  
-//   if(lifeCount()==0){
-// stage = 9;
-//   }
-    
+
+  //   if(lifeCount()==0){
+  // stage = 9;
+  //   }
+
   pop();
   scale(1 / scX, 1 / scY);
 }
@@ -1228,15 +1275,17 @@ function lv1_Game(convey) {
     }
     lv1_Stars[i].move();
     lv1_Stars[i].display();
+
     if (lv1_Stars[i].fail()) {
       lv1_Failure += 1; // 별 잡는 것을 실패하면 실패횟수+1
-            if (lifeCount()<=0){
-        stage=9;
+      if (lifeCount() <= 0) {
+        stage = 9;
       }
       se2.play();
+      warn = true;
+      warning();
     }
   }
-
   basket.move();
   basket.display();
 }
@@ -1325,14 +1374,14 @@ function lv2_Game_B() {
 
 function lv2_Star() {
   for (let i of ONEtoTWO) {
-    if(lv2_Stars[i].show()==true){
-    lv2_Stars[i].display();
-  }
+    if (lv2_Stars[i].show() == true) {
+      lv2_Stars[i].display();
+    }
     lv2_Stars[i].expand();
     //별 잡았을 경우 별가루 이미지 생성
     if (lv2_Stars[i].b) {
-      if(lv2_Stars[i].show()==true){
-      lv2_Stars[i].broken();
+      if (lv2_Stars[i].show() == true) {
+        lv2_Stars[i].broken();
       }
       lv2_Stars[i].brokenMove();
       if ((2 * frameCount) % 120 == 119) {
@@ -1343,10 +1392,12 @@ function lv2_Star() {
 
     if (lv2_Stars[i].fail()) {
       lv2_Failure += 1;
-            if (lifeCount()<=0){
-        stage=10;
+      if (lifeCount() <= 0) {
+        stage = 10;
       }
       lv2_Stars[i].caught();
+      warn = true;
+      warning();
       se2.play();
       //lv2_Stars[i].c =color(0, 100);
     } //잡는 데 실패할 경우 변화
@@ -1383,7 +1434,7 @@ function mousePressed() {
       }
     }
   } //별을 잡음
-  
+
   if (
     stage == 0 &&
     mouseX > (width * 85) / 100 &&
@@ -1391,6 +1442,7 @@ function mousePressed() {
     mouseY > (height * 93) / 100 - height / 19 &&
     mouseY < (height * 93) / 100
   ) {
+    se5.play();
     stage += 0.1;
   } else if (
     stage == 0.1 &&
@@ -1399,9 +1451,9 @@ function mousePressed() {
     mouseY > (height * 82) / 100 - height / 15 &&
     mouseY < (height * 82) / 100 + height / 11 - height / 15
   ) {
+    se5.play();
     stage -= 0.1;
-  }
-  else if (
+  } else if (
     stage == 0 &&
     mouseX > width - (width * 3) / 5 &&
     mouseX < (width * 3) / 5 &&
@@ -1528,10 +1580,9 @@ function mousePressed() {
     mouseY < (height * 87) / 100 + height / 11 - height / 15
   ) {
     se5.play();
-    if(breadCount==0){
+    if (breadCount == 0) {
       stage += 4;
-    }
-    else {
+    } else {
       stage += 5;
     }
   } else if (
@@ -1542,10 +1593,9 @@ function mousePressed() {
     mouseY < (height * 87) / 100 + height / 11 - height / 15
   ) {
     se5.play();
-    if(breadCount==0){
+    if (breadCount == 0) {
       stage += 3;
-    }
-    else {
+    } else {
       stage += 4;
     }
   } else if (
@@ -1556,10 +1606,9 @@ function mousePressed() {
     mouseY < (height * 87) / 100 + height / 11 - height / 15
   ) {
     se5.play();
-    if(breadCount==0){
+    if (breadCount == 0) {
       stage += 2;
-    }
-    else {
+    } else {
       stage += 3;
     }
   } else if (
@@ -1570,10 +1619,9 @@ function mousePressed() {
     mouseY < (height * 87) / 100 + height / 11 - height / 15
   ) {
     se5.play();
-    if(breadCount==0){
+    if (breadCount == 0) {
       stage += 1;
-    }
-    else {
+    } else {
       stage += 2;
     }
   } else if (
@@ -1627,8 +1675,8 @@ function lv3_Game(convey) {
 
   //빵
   for (i = 0; i < TWOtoTHREE; i++) {
-    if(lv3_baking[i].show()==true){
-    lv3_baking[i].display();
+    if (lv3_baking[i].show() == true) {
+      lv3_baking[i].display();
     }
     lv3_baking[i].move();
     if (
@@ -1651,10 +1699,12 @@ function lv3_Game(convey) {
     if (lv3_baking[i].fail()) {
       lv3_baking[i].caught();
       lv3_failure++;
-      if (lifeCount()<=0){
-        stage=11;
+      if (lifeCount() <= 0) {
+        stage = 11;
       }
       se2.play();
+      warn = true;
+      warning();
     }
     // console.log("lv3_성공: " + THREEtoFOUR + ", lv3_실패: " + lv3_failure);
   }
@@ -1670,8 +1720,8 @@ function keyPressed() {
   }
   //for level4
   if (keyCode == 32) {
-    opacity1=0;
-    opacity2=255;
+    opacity1 = 0;
+    opacity2 = 255;
     if (lv4_breads.slice(spaceCount + 1).length > 0) {
       fall = true;
       spaceCount++;
@@ -1681,6 +1731,11 @@ function keyPressed() {
       }
       // 빵 떨어뜨릴 때마다 평가진행
     }
+    //lv4_breads.warn4();
+    // if (lv4_breads.c != lv4_stars[lv4_stars.length - 2].c) {
+    //   warn = true;
+    //   warning();
+    // }
   }
 }
 
@@ -1712,27 +1767,29 @@ function lv4_game() {
     if (lv4_belts[lv4_belts.length - 1].x4 > -10) {
       lv4_moreBelts();
     }
-    if(belt.show() == true){
-    belt.move();
-    belt.display();
-    fill(182, 195, 203);
-    stroke(255);
-  }}
+    if (belt.show() == true) {
+      belt.move();
+      belt.display();
+      fill(182, 195, 203);
+      stroke(255);
+    }
+  }
 
   //별가루
   for (let star of lv4_stars) {
     if (lv4_stars[lv4_stars.length - 1].x > 200) {
       lv4_moreStars();
     }
-    if(star.show()==true){
-    star.evaluate();
-    star.goTrash();
-    star.display();}
+    if (star.show() == true) {
+      star.evaluate();
+      star.goTrash();
+      star.display();
+    }
     noStroke();
     rect(-300, height - 150, 300, 150);
   }
-  
-  image(trashcanImg, 450, 430, width/2, height/1.5);
+
+  image(trashcanImg, 450, 430, width / 2, height / 1.5);
   //대기열 빵들
   if (lv4_breads.length > 0) {
     for (let i = 0; i < lv4_breads.length; i++) {
@@ -1814,12 +1871,42 @@ function lv4_moreBreads(c) {
 //   fall=false;
 // }
 
-function gameOver() {
-  background(190, 100, 210);
-  textAlign(CENTER);
-  textSize(30);
-  fill(255);
-  text("GAME OVER", width / 2, height / 2 - 10);
-  textSize(25);
-  text("Refresh the page to replay!", width / 2, height / 2 + 50);
+function warning() {
+  // let k = 0;
+  // k++;
+  // if(k<1000){
+  //   fill(255,100,100,150);
+  //   rect(0,0,width,height);
+  // } else{
+  //   k = 0;
+  //   warn = false;
+  // }
+
+  if (warn == true) {
+    noStroke();
+    fill(255, 100, 100, 127 + 127 * sin(angle));
+    rect(0, 0, width, height);
+    angle += 0.001;
+  }
+  if (sin(angle) == 2) {
+    warn = false;
+  }
+} //sin(angle) 수업 중 배웠던 거 쓰려고 넣어놨지만 사실상 아무 의미가 없음. 상수를 넣어도 상관 X.. warn = false 이걸 빼도 차이가 없음.. 그냥 바로 덮이는 것 같음
+
+function replay() {
+  if (stage == 9 || stage == 10 || stage == 11 || stage == 12 || stage == 13) {
+    tryAgain = true;
+  } else {
+    tryAgain = false;
+  }
+
+  // if(stage == 0){
+  //   tryAgain = false;
+  // }
+
+  if (tryAgain == true) {
+    trygame = 0;
+    countDown = [];
+    time_x = 900;
+  }
 }

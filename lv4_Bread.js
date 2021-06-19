@@ -46,10 +46,14 @@ class Bread {
       // 아예 새로운 이미지 업로드 되는 순간 opacity assign으로 수정
     } else {
       se2.play();
+      fill(255);
+      rect(0, 0, 200, 200);
       lv4_failure++;
-            if (lifeCount()<=0){
-        stage=12;
+      if (lifeCount() <= 0) {
+        stage = 12;
       }
+      warn = true;
+      warning();
     }
   }
   success() {
@@ -71,11 +75,18 @@ class Bread {
     }
   }
 
-  show(){
-    if(true) {
+  show() {
+    if (true) {
       return true;
-    }
-    else if(this.x<=-999 || this.y>=999) {
+    } else if (this.x <= -999 || this.y >= 999) {
       return false;
-  }}
+    }
+  }
+
+  // warn4() {
+  //   if (this.c != lv4_stars[lv4_stars.length - 2].c) {
+  //     warn = true;
+  //     warning();
+  //   }
+  //}
 }

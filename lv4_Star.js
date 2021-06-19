@@ -19,6 +19,8 @@ class Star {
   evaluate(){
     if(this.x <= width-290 && this.x >= width-290-this.sx && this.y == 4*height/5 && lv4_breads.length>0 && lv4_breads.slice(spaceCount+1).length>0 && this.c == lv4_breads[spaceCount+1].c){
       se2.play();
+      warn = true;
+      warning();
       console.log("실패");
       lv4_failure++;
             if (lifeCount()<=0){
